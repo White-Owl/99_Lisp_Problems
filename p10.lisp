@@ -9,21 +9,12 @@
 ;;;    ((4 A) (1 B) (2 C) (2 A) (1 D) (4 E))
 
 (defun encode (lst) 
-	(let (	(cnt 0)
-			(p (car lst))
-			(result '())
-		 ) ; let
-
-		(dolist (n lst)
-			(if (eql p n)
-				(incf cnt)
-				(progn
-					(setf result (append result (list (list cnt p))))
-					(setf p n)
-					(setf cnt 1)
-				)
-			)
-		)
-		(append result (list (list cnt p)))
-	)
-)
+  (let ( (sublist (list (car lst)))
+         (result '()))
+    (dolist (n (cdr lst))
+      (if (eql (car sublist) n)
+          (setf sublist (append sublist (list n)))
+          (progn
+            (setf result (append result (list (list (length sublist) (car sublist)))))
+            (setf sublist (list n)))))
+    (append result (list (list (length sublist) (car sublist))))))
